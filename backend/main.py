@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import resume_router
+from app.routers import resume_router, interview_router
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Api Bridge Talent")
@@ -12,6 +12,8 @@ app.add_middleware(
 )
 
 app.include_router(resume_router.router, prefix="/resume", tags=["Resume"])
+app.include_router(interview_router.router, prefix="/interview", tags=["Resume"])
+
 
 @app.get("/")
 def root():

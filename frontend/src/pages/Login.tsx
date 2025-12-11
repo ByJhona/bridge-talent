@@ -30,6 +30,19 @@ const Login = () => {
         }
   };
 
+    const handleSubmitCompany = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+          await loginUser(email, password);
+          console.log("Company login successful:", email);
+          
+          navigate("/company/dashboard");
+        } catch (error) {
+          console.error("Erro ao entrar no dashboard da empresa:", error);
+          alert("Erro no login, tente novamente");
+        }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -55,7 +68,6 @@ const Login = () => {
                       Empresa
                     </TabsTrigger>
                   </TabsList>
-
                   <TabsContent value="candidate">
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div className="space-y-2">
@@ -114,19 +126,14 @@ const Login = () => {
                           <div className="w-full border-t border-border"></div>
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">ou continue com</span>
                         </div>
                       </div>
 
-                      <Button type="button" variant="outline" className="w-full">
-                        <Linkedin className="w-4 h-4 mr-2" />
-                        LinkedIn
-                      </Button>
                     </form>
                   </TabsContent>
 
                   <TabsContent value="company">
-                    <form onSubmit={handleSubmit} className="space-y-4">
+                    <form onSubmit={handleSubmitCompany} className="space-y-4">
                       <div className="space-y-2">
                         <Label htmlFor="email-company">E-mail Corporativo</Label>
                         <div className="relative">

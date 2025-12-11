@@ -5,15 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Star, Briefcase, FileText } from "lucide-react";
 import { SkillCategory } from '../../services/apiService.tsx';
 import { useAuth } from '../../context/AuthContext.jsx';
-import { getAbilities, getFeedback } from '../../services/database_realtime.tsx';
+import { getAbilities, getApplications, getFeedback } from '../../services/database_realtime.tsx';
+import { JobApplication } from "../types/Types.tsx";
 
-interface JobApplication {
-  id: string;
-  title: string;
-  company: string;
-  status: "Pendente" | "Aprovado" | "Rejeitado";
-  appliedAt: string;
-}
+
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -21,16 +16,12 @@ const Dashboard = () => {
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [feedback, setFeedback] = useState<string>("");
 
-  // Carrega skills do Firebase
   useEffect(() => {
     if (!user) return;
     getAbilities(user.uid).then((res) => setSkills(res));
     
-    // Fake apps e feedback para demo
-    setApplications([
-      { id: "1", title: "Frontend Developer", company: "Empresa X", status: "Pendente", appliedAt: "2025-12-10" },
-      { id: "2", title: "Backend Developer", company: "Empresa Y", status: "Aprovado", appliedAt: "2025-12-08" },
-    ]);
+    getApplications(user.uid).then((res) => {setApplications(res)})
+
     getFeedback(user.uid).then((res) =>{
         setFeedback(res);
     })

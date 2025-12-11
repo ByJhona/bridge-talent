@@ -20,6 +20,24 @@ export const registerUser = async (name, email, password) => {
 
 };
 
+export const registerCompany = async (companyName, contactName,email, password) => {
+    const companyCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const company = companyCredential.user;
+    await updateProfile(company, { displayName: contactName });
+
+
+    await set(ref(database, 'users/' + company.uid), {
+      companyName: companyName,
+      name: contactName,
+      email:email,
+      createdAt: new Date().toISOString()
+    });
+
+
+    return company;
+
+};
+
 export const loginUser = async (email, password) => {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;

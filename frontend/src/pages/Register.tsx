@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building2, GraduationCap, Mail, Lock, Eye, EyeOff, Linkedin, User, Phone, Briefcase } from "lucide-react";
-import {registerUser} from '../services/authService.tsx'
+import {registerCompany, registerUser} from '../services/authService.tsx'
 import { useNavigate } from "react-router-dom";
 
 
@@ -29,9 +29,7 @@ const Register = () => {
     companyName: "",
     contactName: "",
     email: "",
-    phone: "",
     password: "",
-    confirmPassword: ""
   });
 
   const handleCandidateSubmit = async (e: React.FormEvent) => {
@@ -48,9 +46,17 @@ const Register = () => {
     }
   };
 
-  const handleCompanySubmit = (e: React.FormEvent) => {
+  const handleCompanySubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Company registration:", companyForm);
+    try {
+      await registerCompany(companyForm.companyName, companyForm.contactName,companyForm.email, companyForm.password);
+      console.log("Company registration successful:", companyForm.email);
+      
+      navigate("/company/dashboard");
+    } catch (error) {
+      console.error("Erro ao registrar empresa:", error);
+      alert("Erro no cadastro, tente novamente");
+    }
   };
 
   return (
@@ -157,7 +163,6 @@ const Register = () => {
                           <div className="w-full border-t border-border"></div>
                         </div>
                         <div className="relative flex justify-center text-xs uppercase">
-                          <span className="bg-card px-2 text-muted-foreground">ou cadastre-se com</span>
                         </div>
                       </div>
                     </form>
@@ -208,20 +213,7 @@ const Register = () => {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="phone-company">Telefone</Label>
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input
-                            id="phone-company"
-                            type="tel"
-                            placeholder="(11) 99999-9999"
-                            className="pl-10"
-                            value={companyForm.phone}
-                            onChange={(e) => setCompanyForm({...companyForm, phone: e.target.value})}
-                          />
-                        </div>
-                      </div>
+                      
 
                       <div className="space-y-2">
                         <Label htmlFor="password-company">Senha</Label>
@@ -245,20 +237,7 @@ const Register = () => {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="confirm-password-company">Confirmar Senha</Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input
-                            id="confirm-password-company"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Confirme sua senha"
-                            className="pl-10"
-                            value={companyForm.confirmPassword}
-                            onChange={(e) => setCompanyForm({...companyForm, confirmPassword: e.target.value})}
-                          />
-                        </div>
-                      </div>
+                      
 
                       <label className="flex items-start gap-2 text-sm text-muted-foreground">
                         <input type="checkbox" className="rounded border-border mt-0.5" />

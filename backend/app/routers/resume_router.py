@@ -1,4 +1,5 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+from fastapi import APIRouter, UploadFile, File, HTTPException, Form
+from app.schema.generate_questions_response import GenerateQuestionsResponse
 from app.schema.resume_feedback_schema import ResumeFeedback
 from app.services.extract_text_pdf import extract_text_from_pdf
 from app.services.resume_service import ResumeService
