@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,18 +8,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building2, GraduationCap, Mail, Lock, Eye, EyeOff, Linkedin } from "lucide-react";
-
+import {loginUser} from '../services/authService.tsx'
 const Login = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const defaultTab = searchParams.get("type") === "company" ? "company" : "candidate";
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic
-    console.log("Login attempt:", { email, password });
+    try {
+          await loginUser(email, password);
+          console.log("Candidate login successful:", email);
+          
+          navigate("/dashboard");
+        } catch (error) {
+          console.error("Erro ao entrar no dashboard do candidato:", error);
+          alert("Erro no login, tente novamente");
+        }
   };
 
   return (

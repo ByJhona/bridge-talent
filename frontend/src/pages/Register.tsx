@@ -8,8 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Building2, GraduationCap, Mail, Lock, Eye, EyeOff, Linkedin, User, Phone, Briefcase } from "lucide-react";
+import {registerUser} from '../services/authService.tsx'
+import { useNavigate } from "react-router-dom";
+
+
 
 const Register = () => {
+  const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const defaultTab = searchParams.get("type") === "company" ? "company" : "candidate";
   const [showPassword, setShowPassword] = useState(false);
@@ -17,9 +22,7 @@ const Register = () => {
   const [candidateForm, setCandidateForm] = useState({
     name: "",
     email: "",
-    phone: "",
     password: "",
-    confirmPassword: ""
   });
 
   const [companyForm, setCompanyForm] = useState({
@@ -31,9 +34,18 @@ const Register = () => {
     confirmPassword: ""
   });
 
-  const handleCandidateSubmit = (e: React.FormEvent) => {
+  const handleCandidateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Candidate registration:", candidateForm);
+
+    try {
+      await registerUser(candidateForm.name, candidateForm.email, candidateForm.password);
+      console.log("Candidate registration successful:", candidateForm.email);
+      
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Erro ao registrar candidato:", error);
+      alert("Erro no cadastro, tente novamente");
+    }
   };
 
   const handleCompanySubmit = (e: React.FormEvent) => {
@@ -78,6 +90,7 @@ const Register = () => {
                             placeholder="Seu nome completo"
                             className="pl-10"
                             value={candidateForm.name}
+                            required
                             onChange={(e) => setCandidateForm({...candidateForm, name: e.target.value})}
                           />
                         </div>
@@ -93,25 +106,13 @@ const Register = () => {
                             placeholder="seu@email.com"
                             className="pl-10"
                             value={candidateForm.email}
+                            required
                             onChange={(e) => setCandidateForm({...candidateForm, email: e.target.value})}
                           />
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="phone-candidate">Telefone</Label>
-                        <div className="relative">
-                          <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input
-                            id="phone-candidate"
-                            type="tel"
-                            placeholder="(11) 99999-9999"
-                            className="pl-10"
-                            value={candidateForm.phone}
-                            onChange={(e) => setCandidateForm({...candidateForm, phone: e.target.value})}
-                          />
-                        </div>
-                      </div>
+                      
 
                       <div className="space-y-2">
                         <Label htmlFor="password-candidate">Senha</Label>
@@ -123,6 +124,7 @@ const Register = () => {
                             placeholder="Mínimo 8 caracteres"
                             className="pl-10 pr-10"
                             value={candidateForm.password}
+                            required
                             onChange={(e) => setCandidateForm({...candidateForm, password: e.target.value})}
                           />
                           <button
@@ -135,23 +137,9 @@ const Register = () => {
                         </div>
                       </div>
 
-                      <div className="space-y-2">
-                        <Label htmlFor="confirm-password-candidate">Confirmar Senha</Label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                          <Input
-                            id="confirm-password-candidate"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="Confirme sua senha"
-                            className="pl-10"
-                            value={candidateForm.confirmPassword}
-                            onChange={(e) => setCandidateForm({...candidateForm, confirmPassword: e.target.value})}
-                          />
-                        </div>
-                      </div>
 
                       <label className="flex items-start gap-2 text-sm text-muted-foreground">
-                        <input type="checkbox" className="rounded border-border mt-0.5" />
+                        <input type="checkbox" className="rounded border-border mt-0.5" required />
                         <span>
                           Concordo com os{" "}
                           <Link to="/terms" className="text-primary hover:underline">Termos de Uso</Link>
@@ -172,11 +160,6 @@ const Register = () => {
                           <span className="bg-card px-2 text-muted-foreground">ou cadastre-se com</span>
                         </div>
                       </div>
-
-                      <Button type="button" variant="outline" className="w-full">
-                        <Linkedin className="w-4 h-4 mr-2" />
-                        LinkedIn
-                      </Button>
                     </form>
                   </TabsContent>
 
