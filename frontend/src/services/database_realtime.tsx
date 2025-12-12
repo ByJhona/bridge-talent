@@ -1,6 +1,6 @@
 import { auth, database } from "../../firebase";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut , updateProfile} from "firebase/auth";
-import { get, push, ref, remove, set ,update} from "firebase/database";
+import { equalTo, get, orderByChild, push, query, ref, remove, set ,update} from "firebase/database";
 import { SkillCategory } from "./apiService";
 import { Job, UserApplication , JobApplication, Candidate, FirebaseUser} from "@/components/types/Types";
 
@@ -105,6 +105,13 @@ export const getCandidatesAppliedToJob = async (jobId: string): Promise<Candidat
 export const getJobs = async (): Promise<Job[]> => {
   const jobsRef = ref(database, "jobs");
   const snapshot = await get(jobsRef);
+  return snapshot.exists() ? Object.values(snapshot.val()) : [];
+};
+
+export const getJobsById = async (owner: string = ""): Promise<Job[]> => {
+  const jobsRef = ref(database, "jobs");
+  const jobsQuery = query(jobsRef, orderByChild("owner"), equalTo(owner));
+  const snapshot = await get(jobsQuery);
   return snapshot.exists() ? Object.values(snapshot.val()) : [];
 };
 

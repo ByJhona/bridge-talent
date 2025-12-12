@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import { useAuth } from "../../context/AuthContext.jsx";
-import { createJob, getJobs } from "../../services/database_realtime.tsx";
+import { createJob, getJobsById } from "../../services/database_realtime.tsx";
 import { Job } from "@/components/types/Types";
 import { ref, remove } from "firebase/database";
 
@@ -19,7 +19,9 @@ const JobManager = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchJobs = async () => {
-    const allJobs = await getJobs();
+    if (!user || !user.uid) return; 
+
+    const allJobs = await getJobsById(user.uid);
     setJobs(allJobs);
   };
 
@@ -36,6 +38,7 @@ const JobManager = () => {
       company: user?.name || "Empresa",
       description,
       skillsRequired: skillsArray,
+      owner: user.uid
     });
     setTitle("");
     setDescription("");

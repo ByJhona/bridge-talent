@@ -115,7 +115,7 @@ const CompanyDashboard = () => {
         <div className="p-6 space-y-6">
           {activeTab === "dashboard" && (
           <div className="gradient-accent rounded-2xl p-6 text-accent-foreground">
-            <h2 className="text-2xl font-bold mb-2">Bem-vinda, {user?.name || "Empresa"}! 🚀</h2>
+            <h2 className="text-2xl font-bold mb-2">Bem-vinda(o), {user?.name || "Empresa"}! 🚀</h2>
             <p className="text-accent-foreground/80">
               Aqui você verá um resumo das suas vagas e candidatos.            </p>
           </div>

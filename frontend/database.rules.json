@@ -1,6 +1,15 @@
 {
   "rules": {
-    ".read": true,
-    ".write": true
+    "jobs": {
+      ".read": true,
+      ".write": true,
+      ".indexOn": ["owner"]
+    },
+    "users": {
+      "$uid": {
+        ".read": true,
+        ".write": "$uid === auth.uid"
+      }
+    }
   }
 }

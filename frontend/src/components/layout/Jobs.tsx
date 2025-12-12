@@ -15,12 +15,12 @@ const JobsDashboard = () => {
   const [userApplications, setUserApplications] = useState<string[]>([]);
   const [expandedJobId, setExpandedJobId] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!user) return;
+useEffect(() => {
+if (!user || !user.uid) return;
+  getJobs().then((res) => setJobs(res)); 
+  getUserApplications(user.uid).then((res) => setUserApplications(res)); // array de jobIds que ele já se inscreveu
+}, [user]);
 
-    getJobs().then((res) => setJobs(res));
-    getUserApplications(user.uid).then((res) => setUserApplications(res)); // array de jobIds
-  }, [user]);
 
   const handleApply = (jobId: string) => {
     if (!user) return;

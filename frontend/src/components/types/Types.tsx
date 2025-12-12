@@ -5,6 +5,7 @@ export interface Job {
   description: string;
   skillsRequired: string[];
   createdAt: string; 
+  owner:string;
 }
 
 export interface UserApplication {

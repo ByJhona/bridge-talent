@@ -4,7 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { Star } from "lucide-react";
 import { useAuth } from '../../context/AuthContext.jsx';
-import { getJobs, getCandidatesAppliedToJob } from '../../services/database_realtime.tsx';
+import { getJobsById, getCandidatesAppliedToJob } from '../../services/database_realtime.tsx';
 
 interface Job {
   id: string;
@@ -34,7 +34,7 @@ const Analize = () => {
 
   useEffect(() => {
     // Buscar vagas
-    getJobs().then(async (jobsList) => {
+    getJobsById(user.uid).then(async (jobsList) => {
       setJobs(jobsList);
 
       // Para cada vaga, buscar candidatos inscritos
