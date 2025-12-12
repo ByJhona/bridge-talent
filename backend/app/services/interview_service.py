@@ -67,7 +67,9 @@ class InterviewService(BaseModel):
         system_prompt = """
         Você é um avaliador especialista em entrevistas técnicas.
         Sua tarefa é ler todas as perguntas e respostas do candidato e
-        gerar um feedback final único, objetivo, profissional e construtivo.
+        gerar um feedback final único, objetivo, profissional e construtivo.           
+        Estruture bem para exibição, pode colocar quebra de linha para manter o texto organizado.
+
 
         Regras:
         - Devolva SOMENTE JSON válido.
