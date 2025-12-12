@@ -64,7 +64,7 @@ const InterviewTrainer = () => {
 
     setLoadingQuestions(true);
 
-    const res = await fetch("http://localhost:8081/interview/generate-questions", {
+    const res = await fetch("https://bridge-talent.onrender.com/interview/generate-questions", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ topic }),
@@ -130,7 +130,7 @@ const InterviewTrainer = () => {
   const handleFinish = async () => {
     setLoadingEvaluation(true);
 
-    const res = await fetch("http://localhost:8081/interview/evaluate", {
+    const res = await fetch("https://bridge-talent.onrender.com/interview/evaluate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -58,4 +58,4 @@ export class ApiService {
   }
 }
 
-export const api = new ApiService("http://localhost:8081");
+export const api = new ApiService("https://bridge-talent.onrender.com");
